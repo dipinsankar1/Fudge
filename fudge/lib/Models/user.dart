@@ -7,6 +7,15 @@ String userToJson(List<User> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class User {
+  int id;
+  String name;
+  String username;
+  String email;
+  Address address;
+  String phone;
+  String website;
+  Company company;
+
   User({
     required this.id,
     required this.name,
@@ -17,15 +26,6 @@ class User {
     required this.website,
     required this.company,
   });
-
-  int id;
-  String name;
-  String username;
-  String email;
-  Address address;
-  String phone;
-  String website;
-  Company company;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
