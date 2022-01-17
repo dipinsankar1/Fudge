@@ -2,6 +2,13 @@
 
 A new Flutter project.
 
+## Requirments
+* Any Operating System (ie. MacOS X, Linux, Windows)
+* Any IDE with Flutter SDK installed (ie. Android Studio, VSCode,IntelliJ etc)
+* Clone the repository with the 'clone' command, or just download the zip.
+* Install dependencies from pubspec.yaml by running 'flutter packages get' from the project root.
+* You are done with installing the packages, the errors are corrected. 
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
