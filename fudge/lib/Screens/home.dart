@@ -5,7 +5,6 @@ import 'package:fudge/Widgets/profile_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:fudge/Models/user.dart';
 import 'package:fudge/Bloc/user_bloc.dart';
-import 'package:fudge/Screens/card_screen.dart';
 import 'package:fudge/Widgets/title_box.dart';
 import 'package:fudge/Widgets/progress_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,21 +17,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  UserBLoC userBLoC = new UserBLoC();
-  late List<SalesData> _chartData;
+  UserBLoC userBLoC = UserBLoC();
+  late List<PerformanceData> _chartData;
   late TooltipBehavior _tooltipBehavior;
   late List<User>? _userData;
   final List<String> images = [
     'assets/usr1.png',
     'assets/usr2.png',
     'assets/usr3.png',
+    'assets/usr4.png',
     'assets/usr1.png',
     'assets/usr2.png',
     'assets/usr3.png',
+    'assets/usr4.png',
     'assets/usr1.png',
     'assets/usr2.png',
-    'assets/usr3.png',
-    'assets/usr1.png',
   ];
 
   @override
@@ -61,16 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Center(child: CircularProgressIndicator());
               case ConnectionState.done:
                 if (snapshot.hasError) {
-                  return Text('There was an error : ${snapshot.error}');
+                  return Center(
+                      child: Text('There was an error : ${snapshot.error}'));
                 }
 
                 //print('My data is ${snapshot.data}');
 
                 _userData = snapshot.data;
-                print(_userData?[0].username);
 
-                // ignore: avoid_print
-                //print(users);
                 return SingleChildScrollView(
                   child: Stack(
                     children: [
@@ -86,30 +83,37 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 200,
                               color: Colors.transparent,
                               child: SfCartesianChart(
+                                enableAxisAnimation: true,
+                                // plotAreaBackgroundImage:
+                                //     AssetImage('assets/Rectangle 9@2x.png'),
                                 plotAreaBackgroundColor:
-                                    Color.fromRGBO(83, 85, 155, 0.18),
+                                    Color.fromRGBO(83, 85, 160, 0.18),
                                 palette: [Color.fromRGBO(20, 122, 214, 1)],
+
                                 tooltipBehavior: _tooltipBehavior,
 
                                 series: <ChartSeries>[
-                                  LineSeries<SalesData, String>(
+                                  LineSeries<PerformanceData, String>(
                                       name: 'Balance',
                                       dataSource: _chartData,
-                                      xValueMapper: (SalesData sales, _) =>
-                                          sales.month,
-                                      yValueMapper: (SalesData sales, _) =>
-                                          sales.sales,
-                                      dataLabelSettings:
-                                          DataLabelSettings(isVisible: true),
+                                      xValueMapper:
+                                          (PerformanceData sales, _) =>
+                                              sales.month,
+                                      yValueMapper:
+                                          (PerformanceData sales, _) =>
+                                              sales.sales,
+                                      dataLabelSettings: DataLabelSettings(
+                                          isVisible: true,
+                                          color: Colors.white,
+                                          textStyle: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          )),
                                       enableTooltip: true)
                                 ],
                                 primaryXAxis: CategoryAxis(),
                                 primaryYAxis:
-                                    NumericAxis(minimum: 0, maximum: 800),
-                                // primaryYAxis: NumericAxis(
-                                //     labelFormat: '{value}M',
-                                //     numberFormat:
-                                //         NumberFormat.simpleCurrency(decimalDigits: 0)),
+                                    NumericAxis(minimum: 0, maximum: 600),
                               ),
                             ),
                           ),
@@ -283,20 +287,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<SalesData> getChartData() {
-    final List<SalesData> chartData = [
-      SalesData('JAN', 300),
-      SalesData('FEB', 280),
-      SalesData('MAR', 489),
-      SalesData('APR', 150),
-      SalesData('MAY', 90)
+  List<PerformanceData> getChartData() {
+    final List<PerformanceData> chartData = [
+      PerformanceData('JAN', 300),
+      PerformanceData('FEB', 280),
+      PerformanceData('MAR', 489),
+      PerformanceData('APR', 150),
+      PerformanceData('MAY', 90)
     ];
     return chartData;
   }
 }
 
-class SalesData {
-  SalesData(this.month, this.sales);
+class PerformanceData {
+  PerformanceData(this.month, this.sales);
   final String month;
   final double sales;
 }
